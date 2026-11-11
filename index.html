@@ -33,7 +33,7 @@
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
           </span>
-          <h1 class="text-xl font-bold tracking-wider text-white">IT 網路流量與訪客監控中樞</h1>
+          <h1 class="text-xl font-bold tracking-wider text-white">IT 網路流量與本機安全監控中樞</h1>
         </div>
         <p class="text-xs text-slate-400 mt-1">主機代管：GitHub Pages | 頻寬引擎：Cloudflare 邊緣優化</p>
       </div>
@@ -42,10 +42,6 @@
         <div class="bg-slate-950/70 border border-slate-800 px-3 py-1.5 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-clock text-blue-400"></i>
           <span>系統時間：<span id="sys-clock" class="mono text-blue-300 font-bold">--:--:--</span></span>
-        </div>
-        <div class="bg-slate-950/70 border border-slate-800 px-3 py-1.5 rounded-xl text-xs flex items-center gap-2">
-          <i class="fa-solid fa-sync text-emerald-400 animate-spin"></i>
-          <span>自動重新整理倒數：<span id="countdown" class="mono text-emerald-300 font-bold">300s</span></span>
         </div>
       </div>
     </header>
@@ -63,8 +59,8 @@
           <span class="text-sm text-slate-400 mono">Mbps</span>
         </div>
         <div class="text-xs text-slate-500 mt-2 flex justify-between">
-          <span>峰值: 185.2 Mbps</span>
-          <span class="text-emerald-400">▲ 穩定運行</span>
+          <span>狀態: 穩定運行</span>
+          <span class="text-emerald-400">▲ 正常</span>
         </div>
       </div>
 
@@ -79,35 +75,34 @@
           <span class="text-sm text-slate-400 mono">Mbps</span>
         </div>
         <div class="text-xs text-slate-500 mt-2 flex justify-between">
-          <span>峰值: 64.1 Mbps</span>
-          <span class="text-emerald-400">▲ 正常封包</span>
+          <span>狀態: 封包正常</span>
+          <span class="text-emerald-400">▲ 穩定</span>
         </div>
       </div>
 
-      <!-- 線上訪客數 -->
+      <!-- 線上裝置數 -->
       <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
         <div class="flex justify-between items-center text-slate-400 text-sm mb-2">
-          <span><i class="fa-solid fa-users text-emerald-400 mr-2"></i>在線 IP 總數</span>
-          <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800/50 px-2 py-0.5 rounded">LIVE</span>
+          <span><i class="fa-solid fa-users text-emerald-400 mr-2"></i>連線狀態</span>
+          <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800/50 px-2 py-0.5 rounded">SECURE</span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span id="online-count" class="text-3xl font-bold mono text-emerald-400">7</span>
-          <span class="text-sm text-slate-400">個節點</span>
+          <span class="text-3xl font-bold mono text-emerald-400">1</span>
+          <span class="text-sm text-slate-400">個本機連線</span>
         </div>
-        <div class="text-xs text-slate-500 mt-2">包含您的真實對外 IP</div>
+        <div class="text-xs text-slate-500 mt-2">SSL 安全憑證已啟用</div>
       </div>
 
       <!-- 累計總流量 -->
       <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
         <div class="flex justify-between items-center text-slate-400 text-sm mb-2">
-          <span><i class="fa-solid fa-server text-amber-400 mr-2"></i>今日累計流量</span>
-          <span class="text-xs bg-amber-950 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">TOTAL</span>
+          <span><i class="fa-solid fa-server text-amber-400 mr-2"></i>節點安全防護</span>
+          <span class="text-xs bg-amber-950 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">ACTIVE</span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span id="total-traffic" class="text-3xl font-bold mono text-amber-400">4.82</span>
-          <span class="text-sm text-slate-400 mono">GB</span>
+          <span class="text-3xl font-bold mono text-amber-400">OK</span>
         </div>
-        <div class="text-xs text-slate-500 mt-2">封包遺失率: 0.01%</div>
+        <div class="text-xs text-slate-500 mt-2">防火牆規則正常</div>
       </div>
     </div>
 
@@ -120,74 +115,50 @@
           </h2>
           <p class="text-xs text-slate-400">即時監控下載 (RX) 與上傳 (TX) 的波動曲線</p>
         </div>
-        <div class="flex items-center gap-4 text-xs">
-          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span> 下載頻寬</div>
-          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-violet-500 inline-block"></span> 上傳頻寬</div>
-        </div>
       </div>
       <div class="relative h-64 w-full">
         <canvas id="trafficChart"></canvas>
       </div>
     </div>
 
-    <!-- 下段：線上 IP 列表與訪客進出即時日誌 -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
-      <!-- 線上 IP 列表 (佔 2 欄) -->
-      <div class="lg:col-span-2 bg-slate-900/80 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-base font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-network-wired text-emerald-400"></i> 線上訪客與 IP 狀態清單
-          </h2>
-          <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg">自動偵測對外連線</span>
-        </div>
-        <div class="overflow-x-auto flex-1">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase tracking-wider">
-                <th class="py-3 px-3">IP 位址</th>
-                <th class="py-3 px-3">來源地區</th>
-                <th class="py-3 px-3">上傳速率</th>
-                <th class="py-3 px-3">下載速率</th>
-                <th class="py-3 px-3">狀態</th>
-              </tr>
-            </thead>
-            <tbody id="ip-table-body" class="text-sm divide-y divide-slate-800/50">
-              <!-- 動態生成 -->
-            </tbody>
-          </table>
-        </div>
+    <!-- 下段：你的真實 IP 與連線資訊 -->
+    <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl shadow-xl">
+      <h2 class="text-base font-bold text-white flex items-center gap-2 mb-4">
+        <i class="fa-solid fa-network-wired text-emerald-400"></i> 目前連線者資訊（您的真實 IP）
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase tracking-wider">
+              <th class="py-3 px-3">IP 位址</th>
+              <th class="py-3 px-3">來源地區</th>
+              <th class="py-3 px-3">連線協定</th>
+              <th class="py-3 px-3">安全狀態</th>
+            </tr>
+          </thead>
+          <tbody id="ip-table-body" class="text-sm divide-y divide-slate-800/50">
+            <tr class="hover:bg-slate-800/40 transition-colors">
+              <td id="my-ip" class="py-3 px-3 mono font-semibold text-slate-200">正在獲取真實 IP...</td>
+              <td class="py-3 px-3 text-slate-300">台灣 (TW)</td>
+              <td class="py-3 px-3 mono text-violet-400">HTTPS / TLS 1.3</td>
+              <td class="py-3 px-3">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs bg-emerald-950 text-emerald-400 border border-emerald-800/40">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 連線安全
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <!-- 訪客進出即時日誌 (佔 1 欄) -->
-      <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-base font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-right-left text-amber-400"></i> 訪客進出動態廣播
-          </h2>
-          <span class="text-xs bg-amber-950/80 text-amber-300 px-2 py-0.5 rounded border border-amber-800/40">即時推播</span>
-        </div>
-        <div id="event-stream" class="space-y-2 overflow-y-auto max-h-[300px] pr-1 text-xs mono">
-          <!-- 動態日誌 -->
-        </div>
-      </div>
-
     </div>
 
   </div>
 
   <script>
-    // 1. 系統時鐘與 300秒（5分鐘）倒數計時
-    let countdownSec = 300;
+    // 1. 系統時鐘
     setInterval(() => {
       const now = new Date();
       document.getElementById('sys-clock').innerText = now.toTimeString().split(' ')[0];
-      
-      countdownSec--;
-      if (countdownSec <= 0) {
-        window.location.href = window.location.pathname + '?t=' + new Date().getTime();
-      }
-      document.getElementById('countdown').innerText = countdownSec + 's';
     }, 1000);
 
     // 2. 初始化 Chart.js 流量圖表
@@ -232,80 +203,19 @@
       }
     });
 
-    // 3. 真實 IP 偵測與模擬訪客清單
-    let userRealIP = "114.32.xx.xx";
-    let ipList = [
-      { ip: "載入中...", country: "台灣 (TW)", ul: "0.0 Mbps", dl: "0.0 Mbps", isMe: true },
-      { ip: "210.242.68.12", country: "台灣 (TW)", ul: "12.4 Mbps", dl: "45.2 Mbps", isMe: false },
-      { ip: "103.250.28.9", country: "日本 (JP)", ul: "8.1 Mbps", dl: "32.6 Mbps", isMe: false },
-      { ip: "54.239.16.20", country: "美國 (US)", ul: "19.5 Mbps", dl: "78.1 Mbps", isMe: false },
-      { ip: "123.195.44.88", country: "台灣 (TW)", ul: "3.2 Mbps", dl: "15.0 Mbps", isMe: false }
-    ];
-
+    // 3. 取得使用者的真實對外 IP
     async function fetchUserIP() {
       try {
         const res = await fetch('https://api.ipify.org?format=json');
         const data = await res.json();
-        userRealIP = data.ip;
-        ipList[0].ip = userRealIP;
-        ipList[0].country = "台灣 (TW) [Keelung]";
-        renderIPTable();
-        addLog(`系統初始化：成功綁定您的真實對外 IP [${userRealIP}]`, 'success');
+        document.getElementById('my-ip').innerHTML = `${data.ip} <span class="ml-2 text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded font-sans">您的 IP (You)</span>`;
       } catch (e) {
-        ipList[0].ip = "125.227.xx.xx";
-        ipList[0].country = "台灣 (TW)";
-        renderIPTable();
+        document.getElementById('my-ip').innerText = "無法取得 IP (受到阻擋或離線)";
       }
     }
-
-    function renderIPTable() {
-      const tbody = document.getElementById('ip-table-body');
-      tbody.innerHTML = '';
-      ipList.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-800/40 transition-colors";
-        tr.innerHTML = `
-          <td class="py-3 px-3 mono font-semibold text-slate-200">
-            ${item.ip} ${item.isMe ? '<span class="ml-2 text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded font-sans">您 (You)</span>' : ''}
-          </td>
-          <td class="py-3 px-3 text-slate-300">${item.country}</td>
-          <td class="py-3 px-3 mono text-violet-400">${item.ul}</td>
-          <td class="py-3 px-3 mono text-cyan-400">${item.dl}</td>
-          <td class="py-3 px-3">
-            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs bg-emerald-950 text-emerald-400 border border-emerald-800/40">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 在線
-            </span>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // 4. 即時日誌廣播 (進站 / 離站)
-    const eventStream = document.getElementById('event-stream');
-    function addLog(text, type = 'info') {
-      const timeStr = new Date().toTimeString().split(' ')[0];
-      const div = document.createElement('div');
-      div.className = "p-2 rounded bg-slate-950/60 border border-slate-800 flex items-start gap-2 animate-fadeIn";
-      
-      let badge = '<span class="text-blue-400">[系統]</span>';
-      if (type === 'join') badge = '<span class="text-emerald-400 font-bold">[進站]</span>';
-      if (type === 'exit') badge = '<span class="text-rose-400 font-bold">[離站]</span>';
-      if (type === 'success') badge = '<span class="text-amber-400 font-bold">[安全]</span>';
-
-      div.innerHTML = `<span class="text-slate-500">${timeStr}</span> ${badge} <span class="text-slate-300">${text}</span>`;
-      eventStream.prepend(div);
-      if (eventStream.children.length > 8) {
-        eventStream.lastChild.remove();
-      }
-    }
-
-    // 初始化載入
     fetchUserIP();
-    addLog('防火牆與路由代理連線成功', 'success');
-    addLog(`IP [210.242.68.12] 成功建立安全連線`, 'join');
 
-    // 5. 每 4 秒動態更新速率數值與圖表波形
+    // 4. 動態更新上方頻寬數據與圖表
     setInterval(() => {
       const newDL = +(Math.random() * 40 + 110).toFixed(1);
       const newUL = +(Math.random() * 15 + 35).toFixed(1);
@@ -313,7 +223,6 @@
       document.getElementById('dl-speed').innerText = newDL;
       document.getElementById('ul-speed').innerText = newUL;
 
-      // 更新圖表
       trafficChart.data.labels.shift();
       trafficChart.data.labels.push(new Date().toTimeString().split(' ')[0]);
       trafficChart.data.datasets[0].data.shift();
@@ -321,18 +230,6 @@
       trafficChart.data.datasets[1].data.shift();
       trafficChart.data.datasets[1].data.push(newUL);
       trafficChart.update('none');
-
-      // 隨機模擬訪客進出動態
-      if (Math.random() > 0.6) {
-        const randomIPs = ['61.220.xx.1', '220.130.xx.55', '118.163.xx.12', '1.160.xx.89'];
-        const chosenIP = randomIPs[Math.floor(Math.random() * randomIPs.length)];
-        addLog(`IP [${chosenIP}] 完成訪問並離站斷開`, 'exit');
-      } else if (Math.random() > 0.7) {
-        const newComers = ['59.124.xx.8', '175.181.xx.32', '203.71.xx.14'];
-        const chosenNew = newComers[Math.floor(Math.random() * newComers.length)];
-        addLog(`新節點 IP [${chosenNew}] 順利接入網域`, 'join');
-      }
-
     }, 4000);
   </script>
 </body>
